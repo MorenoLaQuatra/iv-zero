@@ -26,7 +26,10 @@ Information Visualization Course (Grenoble INP - MoSIG)
 - Creator: Moreno La Quatra
 - Initial Template: provided by the teacher
 
-  ![Screen Dataset 1](./screen/ds1.png?raw=true)
-  ![Screen Dataset 2](./screen/ds2.png?)
+Screenshot of the project
+-----
+  ![Header Project](./screen/header.png)
+  ![Screen Dataset 1](./screen/ds1.png)
+  ![Screen Dataset 2](./screen/ds2.png)
   ![Screen Dataset 3](./screen/ds3.png)
   ![Screen Dataset 4](./screen/ds4.png)
