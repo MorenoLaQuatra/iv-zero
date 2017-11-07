@@ -17,3 +17,15 @@ Files
 
 .. _Graphs in Statistical Analysis: http://iihm.imag.fr/blanch/teaching/infovis/readings/1973-Anscombe-Graphs_in_Stats.pdf
 .. _d3.js: http://d3js.org
+
+Information Visualization Course (Grenoble INP - MoSIG)
+-----
+
+- Step 0 of this course.
+- Creator: Moreno La Quatra
+- Initial Template: provided by the teacher
+
+![Screen Dataset 1](https://raw.github.com/MorenoLaQuatra/iv-zero/master/screen/ds1.png)
+![Screen Dataset 2](https://raw.github.com/MorenoLaQuatra/iv-zero/master/screen/ds2.png)
+![Screen Dataset 3](https://raw.github.com/MorenoLaQuatra/iv-zero/master/screen/ds3.png)
+![Screen Dataset 4](https://raw.github.com/MorenoLaQuatra/iv-zero/master/screen/ds4.png)
