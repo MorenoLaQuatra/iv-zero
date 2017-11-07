@@ -120,11 +120,11 @@
 					var g = chart.append("svg:g");
 
 					var title = g.append("text")
-									        .attr("x", (width / 2))
-									        .attr("y", 0)
-									        .attr("text-anchor", "middle")
-									        .style("font-size", "12px")
-									        .text("Dataset " + k);
+							         .attr("x", (width / 2))
+							         .attr("y", 0)
+							         .attr("text-anchor", "middle")
+							         .style("font-size", "12px")
+							         .text("Dataset " + k);
 
 					//linear regression Line
 					lr = linearRegression(data.map(function(d) { return d.y; }), data.map(function(d) { return d.x; }))
