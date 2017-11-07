@@ -12,7 +12,7 @@ Files
 - data/txt2tsv.py     script to generate table from original data set
 - data/anscombe.tsv   data set
 
-- viz/0-tables.html   table "visualisation" generated using d3.js_
+- viz/0-tables.html   table "visualisation" generated using d3.js
 
 References
 -----
