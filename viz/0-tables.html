@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style type="text/css" media="screen, print">
+			body  { margin: 30px 50px; font-family: sans-serif; }
+			div   { float: left; margin: 10px; }
+			table { border: 1px solid black; width: 12em;}
+			td    { text-align: right; padding: 0 0 0 10px; }
+		</style>
+		<title>Anscombe's quartet</title>
+	</head>
+	<body>
+		<h1 align="center">Anscombe's quartet</h1>
+		<h2 align="center">IV - Homework 0</h3>
+		<h3 align="center">Moreno La Quatra - M2 Data Science @ MoSIG</h3>
+
+
+		<script src="../vendor/d3/d3.js"></script>
+		<script>
+
+			var body = d3.select("body");
+			var divs = {
+				'1': body.append('div'),
+				'2': body.append('div'),
+				'3': body.append('div'),
+				'4': body.append('div'),
+			};
+
+			var s = d3.formatSpecifier("f");
+			s.precision = d3.precisionFixed(0.01);
+			var f = d3.format(s);
+
+			d3.tsv("../data/anscombe.tsv", function(error, data) {
+				if(error) throw error;
+
+				for(k in divs) {
+					var div = divs[k];
+					var table = div.append('table');
+					table.append('caption')
+						.text('data set ' + k);
+
+					var header = table.append('tr');
+					header.append('th')
+						.text('observation');
+					header.append('th')
+						.text('x');
+					header.append('th')
+						.text('y');
+
+					var row = table.selectAll('row')
+			    		.data(data)
+					  .enter().filter(function(d) { return d.dataset == k; }).append('tr')
+
+					row.append('td')
+						.text(function(d) { return d.observation; });
+
+					row.append('td')
+						.text(function(d) { return d.x; });
+
+					row.append('td')
+						.text(function(d) { return f(d.y); });
+
+				};
+
+				// data to visualize
+				console.log(data);
+
+				// convert string data to numbers
+				data.forEach(function(d) {
+			    d.x = +d.x;
+			    d.y = +d.y;
+			  });
+
+				//width and height of each graph
+				var totalWidth = 500;
+				var totalHeight = 250;
+				var margin = {top: 20, right: 20, bottom: 30, left: 40};
+			  width = totalWidth - margin.left - margin.right;
+			  height = totalHeight - margin.top - margin.bottom;
+
+				// Set scale for both X and Y
+				var scaleX = d3.scaleLinear().domain([0, d3.max(data, function (d,i) { return d.x })]).range([0, width]);
+				var scaleY = d3.scaleLinear().domain([0, d3.max(data, function (d,i) { return d.y })]).range([height, 0]);
+
+				for(k in divs) {
+
+					var box = d3.select('body')
+											.append('svg:svg')
+											.attr('width', totalWidth)
+											.attr('height', totalHeight)
+											.attr('class', 'box')
+
+
+					var chart = box.append('g')
+												 .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+												 .attr('width', width)
+												 .attr('height', height)
+												 .attr('class', 'chart')
+
+
+					// X axis
+					var xAxis = d3.axisBottom().scale(scaleX);
+
+					chart.append('g')
+							 .attr('transform', 'translate(0,' + height + ')')
+							 .attr('class', 'chart axis')
+							 .call(xAxis);
+
+					// Y axis
+					var yAxis = d3.axisLeft().scale(scaleY);
+
+					chart.append('g')
+							 .attr('transform', 'translate(0,0)')
+							 .attr('class', 'chart axis')
+							 .call(yAxis);
+
+
+					// fill the chart
+					var g = chart.append("svg:g");
+
+					var title = g.append("text")
+									        .attr("x", (width / 2))
+									        .attr("y", 0)
+									        .attr("text-anchor", "middle")
+									        .style("font-size", "12px")
+									        .text("Dataset " + k);
+
+					//linear regression Line
+					lr = linearRegression(data.map(function(d) { return d.y; }), data.map(function(d) { return d.x; }))
+					var max = d3.max(data, function (d) { return d.x; });
+					var regressionLine = chart.append("line")
+												            .attr("x1", scaleX(0))
+												            .attr("y1", scaleY(lr.intercept))
+												            .attr("x2", scaleX(max))
+												            .attr("y2", scaleY( (max * lr.slope) + lr.intercept ))
+																		.attr('stroke-width', 2)
+												            .style("stroke", "red");
+
+					// point to be visualized for the selected k
+					g.selectAll("scatter-dots")
+				   .data(data)  // using the data
+				   .enter().filter(function (d) { return d.dataset == k; }).append("svg:circle")  // new circle for each value
+						       .attr("cy", function (d) { return scaleY(d.y) } ) // scale y value
+						       .attr("cx", function (d) { return scaleX(d.x) } ) // scale x value
+						       .attr("r", 2) // set radius
+						       .style("opacity", 1); // set opacity
+
+				}
+
+			});
+
+			//helper function to create the linear regression line
+			function linearRegression(y,x){
+
+					var lr = {};
+					var n = y.length;
+					var sum_x = 0;
+					var sum_y = 0;
+					var sum_xy = 0;
+					var sum_xx = 0;
+					var sum_yy = 0;
+
+					for (var i = 0; i < y.length; i++) {
+
+						sum_x += x[i];
+						sum_y += y[i];
+						sum_xy += (x[i]*y[i]);
+						sum_xx += (x[i]*x[i]);
+						sum_yy += (y[i]*y[i]);
+					}
+
+					lr.slope = (n * sum_xy - sum_x * sum_y) / (n*sum_xx - sum_x * sum_x);
+					lr.intercept = (sum_y - lr.slope * sum_x)/n;
+					lr.r2 = Math.pow((n*sum_xy - sum_x*sum_y)/Math.sqrt((n*sum_xx-sum_x*sum_x)*(n*sum_yy-sum_y*sum_y)),2);
+
+					return lr;
+				}
+
+		</script>
+	</body>
+</html>
