@@ -75,7 +75,7 @@
 				//width and height of each graph
 				var totalWidth = 500;
 				var totalHeight = 250;
-				var margin = {top: 20, right: 20, bottom: 30, left: 40};
+				var margin = {top: 20, right: 20, bottom: 20, left: 20};
 			  width = totalWidth - margin.left - margin.right;
 			  height = totalHeight - margin.top - margin.bottom;
 
@@ -85,11 +85,13 @@
 
 				for(k in divs) {
 
-					var box = d3.select('body')
-											.append('svg:svg')
-											.attr('width', totalWidth)
-											.attr('height', totalHeight)
-											.attr('class', 'box')
+					var div = divs[k];
+
+					var box = div.append('svg:svg')
+											 .attr('width', totalWidth)
+											 .attr('height', totalHeight)
+											 .attr('class', 'box')
+
 
 
 					var chart = box.append('g')
