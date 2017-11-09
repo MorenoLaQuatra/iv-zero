@@ -22,7 +22,7 @@ References
 Information Visualization Course (Grenoble INP - MoSIG)
 -----
 
-- Homewoek 0 of Information Visualization course.
+- Homework 0 of Information Visualization course.
 - Creator: *Moreno La Quatra*
 - Initial Template: provided by the teacher
 
